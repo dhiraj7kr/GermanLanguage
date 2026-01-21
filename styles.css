@@ -1,11 +1,21 @@
 :root {
+  /* Official German Flag Colors (Bundesarchiv) */
   --black: #000000;
-  --red: #dd0000;
-  --gold: #ffcc00;
+  --red: #DD0000; /* Traffic Red */
+  --gold: #FFCE00; /* Melon Yellow - brighter/cleaner than standard gold */
+  
+  /* Modern Dark UI Palette */
   --bg-dark: #050505;
-  --card-bg: #111111;
-  --text: #f7f7f7;
-  --muted: #cccccc;
+  --surface-dark: #121212;
+  --surface-light: #1E1E1E;
+  --border-dim: rgba(255, 255, 255, 0.12);
+  --border-highlight: rgba(255, 255, 255, 0.25);
+  
+  --text: #F0F0F0;
+  --muted: #9E9E9E;
+  
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --glow-gold: 0 0 20px rgba(255, 206, 0, 0.15);
 }
 
 /* Reset-ish */
@@ -17,10 +27,12 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  background: radial-gradient(circle at top, #222 0, #000 55%);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Deep matte black background with subtle noise/gradient */
+  background: linear-gradient(to bottom, #1a1a1a 0%, #050505 100%);
+  background-attachment: fixed;
   color: var(--text);
+  line-height: 1.6;
 }
 
 /* Language visibility */
@@ -37,11 +49,15 @@ body[data-lang="hi"] .lang-hi {
   display: block;
 }
 
-/* German flag bar */
+/* German flag bar - Crisp and exact */
 .flag-bar {
   display: flex;
-  height: 14px;
+  height: 6px; /* Sleeker, thinner line */
   width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 .flag-bar div:nth-child(1) {
   background: var(--black);
@@ -56,20 +72,28 @@ body[data-lang="hi"] .lang-hi {
   flex: 1;
 }
 
-/* Header */
+/* Header - Modern Glass/Gradient */
 .site-header {
-  background: linear-gradient(135deg, #000000 0%, #dd0000 50%, #ffcc00 100%);
+  /* Subtle mesh gradient reflecting flag colors in dark mode */
+  background: 
+    radial-gradient(circle at top right, rgba(221, 0, 0, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at bottom left, rgba(255, 206, 0, 0.08) 0%, transparent 40%),
+    linear-gradient(180deg, #111 0%, #080808 100%);
   color: #fff;
-  padding: 24px 16px 18px;
+  padding: 40px 20px 30px;
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid var(--border-dim);
 }
 
 .site-header::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 0 0, #ffffff22 0, transparent 55%);
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px; /* Technical Grid overlay */
+  opacity: 0.3;
   pointer-events: none;
 }
 
@@ -77,22 +101,32 @@ body[data-lang="hi"] .lang-hi {
   max-width: 1000px;
   margin: 0 auto;
   display: flex;
-  gap: 12px;
-  align-items: center;
+  gap: 20px;
+  align-items: flex-end; /* Aligns title and language toggle nicely */
   justify-content: space-between;
   position: relative;
   z-index: 1;
 }
 
 .site-header h1 {
-  margin: 0 0 4px;
-  font-size: clamp(2rem, 4vw, 2.7rem);
+  margin: 0 0 6px;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(to bottom right, #ffffff, #cccccc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
 }
 
 .subtitle {
   margin: 0;
-  font-size: 0.95rem;
-  opacity: 0.95;
+  font-size: 1rem;
+  color: var(--gold); /* Pop of color */
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.9;
 }
 
 .header-right {
@@ -101,286 +135,409 @@ body[data-lang="hi"] .lang-hi {
   gap: 12px;
 }
 
-/* Language toggle */
+/* Language toggle - Pill Design */
 .lang-toggle {
   display: flex;
-  border-radius: 999px;
-  padding: 2px;
-  background: #00000088;
-  border: 1px solid #ffffff55;
+  border-radius: 99px;
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-dim);
+  backdrop-filter: blur(5px);
 }
 
 .lang-btn {
   border: none;
   background: transparent;
-  color: #ffffffcc;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 0.85rem;
+  color: var(--muted);
+  padding: 8px 16px;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
-  min-width: 48px;
+  min-width: 50px;
+  transition: all 0.3s ease;
+}
+
+.lang-btn:hover {
+  color: #fff;
 }
 
 .lang-btn.active {
-  background: #ffffff;
-  color: #000;
-  font-weight: 600;
+  background: var(--surface-light);
+  color: var(--gold);
+  border: 1px solid var(--border-dim);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 
 /* Main layout */
 .main {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 20px 16px 40px;
+  padding: 40px 20px 60px;
 }
 
+/* Section styling - Glass Cards */
 .section {
-  background: linear-gradient(135deg, #111111, #1b0000);
-  border-radius: 16px;
-  border: 1px solid #ffffff18;
-  padding: 16px 18px;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
-  margin-bottom: 18px;
+  background: rgba(18, 18, 18, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid var(--border-dim);
+  padding: 24px 28px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 24px;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.section:hover {
+  border-color: var(--border-highlight);
 }
 
 .section h2 {
   margin-top: 0;
-  font-size: 1.35rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  border-left: 4px solid var(--red);
+  padding-left: 12px;
+  margin-bottom: 20px;
 }
 
 /* Day list */
 .day-list-section {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .day-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 14px;
-  margin-top: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
 }
 
 .day-card {
-  background: #000000aa;
-  border-radius: 14px;
-  border: 1px solid #ffffff22;
-  padding: 10px 10px 12px;
+  background: linear-gradient(145deg, #161616, #111111);
+  border-radius: 16px;
+  border: 1px solid var(--border-dim);
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effect for cards */
+.day-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5), 0 0 15px rgba(255, 206, 0, 0.1);
+}
+
+.day-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--black), var(--red), var(--gold));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.day-card:hover::before {
+  opacity: 1;
 }
 
 .day-link {
   text-decoration: none;
   color: inherit;
+  height: 100%;
+  display: block;
 }
 
 .day-title {
-  font-size: 0.98rem;
-  font-weight: 600;
-  color: var(--gold);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
 }
 
 .day-meta {
-  font-size: 0.8rem;
-  opacity: 0.85;
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* Progress bar */
 .progress-bar {
   display: flex;
-  border-radius: 999px;
+  border-radius: 8px; /* Slightly more square for German industrial look */
   overflow: hidden;
-  border: 1px solid #ffffff33;
-  margin-top: 6px;
+  background: #000;
+  border: 1px solid var(--border-dim);
+  margin-top: 10px;
+  height: 24px;
 }
 
 .progress-segment {
   flex: 1;
   border: none;
-  background: #111;
-  color: #f0f0f0;
+  background: #0a0a0a;
+  color: #666;
   font-size: 0.7rem;
-  padding: 4px 2px;
-  cursor: pointer;
-  line-height: 1.2;
+  font-weight: 500;
+  padding: 0;
+  cursor: default;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.progress-segment + .progress-segment {
-  border-left: 1px solid #ffffff22;
+.progress-segment:not(:last-child) {
+  border-right: 1px solid rgba(255,255,255,0.05);
 }
 
 .progress-segment.active[data-state="incomplete"] {
-  background: #333333;
+  background: #222;
+  color: #888;
 }
 
 .progress-segment.active[data-state="in-progress"] {
-  background: var(--red);
+  background: rgba(221, 0, 0, 0.2); /* Red tint */
+  color: #fff;
+  border-bottom: 2px solid var(--red);
 }
 
 .progress-segment.active[data-state="completed"] {
   background: var(--gold);
   color: #000;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* Footer */
 .site-footer {
-  border-top: 1px solid #ffffff11;
-  background: var(--bg-dark);
-  padding: 14px 12px 22px;
+  border-top: 1px solid var(--border-dim);
+  background: #000;
+  padding: 30px 20px;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--muted);
+  letter-spacing: 0.05em;
 }
 
 /* ---------- Day page specific ---------- */
 
 .breadcrumb {
-  font-size: 0.8rem;
-  opacity: 0.8;
-  margin-bottom: 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .breadcrumb a {
   color: var(--gold);
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
 }
 
 .breadcrumb a:hover {
-  text-decoration: underline;
+  color: #fff;
 }
 
 /* Two-column layout */
 .day-layout {
   display: grid;
   grid-template-columns: minmax(0, 2.4fr) minmax(0, 1.4fr);
-  gap: 16px;
+  gap: 24px;
 }
 
 /* Alphabet cards */
 .alphabet-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 8px;
-  margin-top: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
 }
 
 .alphabet-card {
-  background: #000000aa;
-  border-radius: 10px;
-  padding: 8px 10px;
-  border: 1px solid #ffffff20;
-  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--border-dim);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color 0.2s;
+}
+
+.alphabet-card:hover {
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .alphabet-card b {
   color: var(--gold);
+  font-size: 1.2em;
 }
 
 /* Phrase table */
 .phrase-table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-  margin-top: 8px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+  margin-top: 12px;
+  border: 1px solid var(--border-dim);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .phrase-table th,
 .phrase-table td {
-  border: 1px solid #ffffff22;
-  padding: 6px 8px;
-  vertical-align: top;
+  border: none;
+  border-bottom: 1px solid var(--border-dim);
+  padding: 12px 16px;
+  vertical-align: middle;
 }
 
 .phrase-table th {
-  background: #000000dd;
+  background: #000;
   color: var(--gold);
-  text-align: left;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+.phrase-table tr:last-child td {
+  border-bottom: none;
+}
+
+.phrase-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .practice-list,
 .goals-list,
 .step-list {
-  margin: 6px 0 0;
-  padding-left: 18px;
-  font-size: 0.9rem;
+  margin: 12px 0 0;
+  padding-left: 20px;
+  font-size: 0.95rem;
+  color: #ddd;
+}
+
+.practice-list li, .goals-list li, .step-list li {
+  margin-bottom: 8px;
 }
 
 .mini-label {
   display: inline-block;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  background: #000000aa;
-  border: 1px solid #ffffff33;
-  margin-bottom: 4px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--muted);
+  margin-bottom: 6px;
 }
 
-/* Side card */
+/* Side card - Highlighting Contrast */
 .side-card {
-  background: linear-gradient(145deg, #111111, #2c0000);
-  border-radius: 18px;
-  padding: 14px 14px 16px;
-  border: 1px solid #ffffff22;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(160deg, #1c1c1c, #0a0a0a);
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid var(--border-dim);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative red line for side cards */
+.side-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, transparent 50%, rgba(221, 0, 0, 0.15) 50%);
+  pointer-events: none;
 }
 
 .side-card h3 {
   margin-top: 0;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: var(--gold);
+  border-bottom: 1px solid var(--border-dim);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .badge {
   display: inline-block;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #000000aa;
-  border: 1px solid #ffffff3a;
-  font-size: 0.8rem;
-  margin-bottom: 6px;
+  padding: 4px 12px;
+  border-radius: 99px;
+  background: rgba(255, 206, 0, 0.1);
+  border: 1px solid rgba(255, 206, 0, 0.3);
+  color: var(--gold);
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  box-shadow: 0 0 10px rgba(255, 206, 0, 0.05);
 }
 
 .iframe-wrapper {
-  margin-top: 10px;
+  margin-top: 16px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #ffffff22;
+  border: 1px solid var(--border-dim);
   background: #000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
 .iframe-wrapper iframe {
   width: 100%;
   border: none;
+  display: block;
 }
 
-/* Speak (pronounce) button */
+/* Speak (pronounce) button - High Tactile Feel */
 .speak-btn {
-  border: none;
-  background: #202020;
-  color: #f7f7f7;
-  border-radius: 999px;
+  border: 1px solid var(--border-dim);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border-radius: 6px;
   font-size: 0.75rem;
-  padding: 2px 8px;
-  margin-left: 6px;
+  padding: 4px 10px;
+  margin-left: 8px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  transition: all 0.2s ease;
 }
 
 .speak-btn span {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
 .speak-btn:hover {
-  background: var(--gold);
-  color: #000;
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(221, 0, 0, 0.4);
 }
 
 /* Responsive */
@@ -389,38 +546,42 @@ body[data-lang="hi"] .lang-hi {
     flex-direction: column;
     align-items: flex-start;
   }
-
+  
   .header-right {
-    align-self: flex-end;
+    align-self: flex-start;
+    margin-top: 12px;
   }
 }
 
 @media (max-width: 780px) {
   .main {
-    padding: 18px 12px 30px;
+    padding: 20px 16px 40px;
   }
-
+  
   .day-layout {
     grid-template-columns: 1fr;
+  }
+  
+  .site-header h1 {
+    font-size: 2.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .site-header {
-    padding: 20px 12px 14px;
+    padding: 20px 16px;
   }
-
+  
   .progress-segment {
     font-size: 0.65rem;
     padding: 4px 1px;
   }
-
+  
   .day-title {
-    font-size: 0.92rem;
+    font-size: 1rem;
   }
-
+  
   .speak-btn {
-    padding: 2px 6px;
-    font-size: 0.7rem;
+    padding: 4px 8px;
   }
 }
